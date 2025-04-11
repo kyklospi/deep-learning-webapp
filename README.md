@@ -1,13 +1,13 @@
-# Deep Learning Image Classifier (ml5.js + Express)
+# Deep Learning Webapp (ml5.js + Express)
 
-This project is a simple web app built with **Node.js**, **Express**, and **ml5.js (MobileNet)** to demonstrate real-time image classification directly in the browser.
+This project is a simple web app built with **Node.js**, **Express**, and **ml5.js** to demonstrate real-time image classification using machine learning models directly in the browser.
 
 ## 🚀 Features
 
-### Project 1
+### Project 1 Image Classifier with MobileNet
 - Preloads **6 images** on page load, grouped as:
-  - ✅ Correct Classification
-  - ❌ False Classification
+  - ✅ Correct Classification: 3 images
+  - ❌ False Classification: 3 images
 - Upload or drag & drop up to **3 images** for instant classification
 - Uses **MobileNet** model from `ml5.js` (built on TensorFlow.js)
 - Displays:
