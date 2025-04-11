@@ -17,33 +17,29 @@ This project is a simple web app built with **Node.js**, **Express**, and **ml5.
 - Includes a clear/reset button to remove uploaded images
 
 ## 📁 Folder Structure
-deep-learning-classifier/
+deep-learning-webapp/
 ├── public/
 │   ├── css/
-│   │   ├── index.css          # Styles for homepage
-│   │   └── ea1.css            # Styles for image classification page
+│   │   ├── index.css            # Styles for homepage
+│   │   └── ea1.css              # Styles for image classification page
 │   ├── images/
-│   │   ├── correct/           # Preloaded images for correct classification
-│   │   │   ├── correct1.jpg
-│   │   │   ├── ...
-│   │   └── false/             # Preloaded images for false classification
-│   │       ├── false1.jpg
-│   │       ├── ...
-│   └── js/
-│       └── upload.js          # Image handling and classification logic
+│   │   ├── correct/             # Preloaded images for correct classification
+│   │   └── false/               # Preloaded images for false classification
+│   └── javascripts/
+│       └── ea1.js            # ML5 image handling logic
 │
 ├── routes/
-│   └── ea1.js                 # Route for /ea1 (image classification page)
+│   └── ea1.js                   # Express route for /ea1
 │
 ├── views/
-│   ├── index.ejs              # Homepage
-│   └── ea1.ejs                # Page with upload, drag-drop, and ML classifier
+│   ├── index.ejs                # Homepage template
+│   └── ea1.ejs                  # Upload + classifier interface
 │
-├── .gitignore                 # Files/folders to exclude from Git
-├── app.js                     # Main server file (Express setup)
-├── package.json               # Project dependencies and scripts
-├── package-lock.json          # Exact version lock of dependencies
-└── README.md                  # Project overview and instructions
+├── .gitignore                   # Ignored files/folders
+├── app.js                       # Main Express app
+├── package.json                 # Project metadata & dependencies
+├── package-lock.json            # Exact versions of installed packages
+└── README.md                    # Project documentation
 
 ## 🧠 Tech Stack
 
