@@ -63,6 +63,10 @@ document.addEventListener('DOMContentLoaded', () => {
               .then(results => {
                 const topResult = results[0];
                 resultText.textContent = `Label: ${topResult.label}, Confidence: ${topResult.confidence.toFixed(2)}`;
+                // Prepare data to show chart
+                const labels = results.map(result => result.label);
+                const confidences = results.map(result => result.confidence * 100); 
+                createChart(labels, confidences);
               })
               .catch(err => {
                 resultText.textContent = 'Error classifying image.';
@@ -105,6 +109,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     .then(results => {
                         const topResult = results[0];
                         resultText.textContent = `Label: ${topResult.label}, Confidence: ${topResult.confidence.toFixed(2)}`;
+
+                        // Prepare data to show chart
+                        const labels = results.map(result => result.label);
+                        const confidences = results.map(result => result.confidence * 100); 
+                        createChart(labels, confidences)
                     })
                     .catch(err => {
                     console.error('Classification error:', err);
@@ -144,6 +153,45 @@ document.addEventListener('DOMContentLoaded', () => {
         imageWrapper.innerHTML = '';
         fileInput.value = ''; // Reset file input
     });
+
+    // Function to create the chart using Chart.js
+    function createChart(labels, confidences) {
+        const ctx = document.getElementById('confidenceChart').getContext('2d');
+        
+        const confidenceChart = new Chart(ctx, {
+            type: 'bar',  // Use a bar chart
+            data: {
+                labels: labels,  // The class labels
+                datasets: [{
+                    label: 'Confidence (%)',
+                    data: confidences,  // The confidence percentages
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',  // Light blue bars
+                    borderColor: 'rgba(54, 162, 235, 1)',  // Dark blue border
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,  // Set max to 100% for the Y axis
+                        ticks: {
+                            stepSize: 10  // Show ticks every 10%
+                        }
+                    }
+                },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                return tooltipItem.raw.toFixed(2) + '%';  // Show confidence as percentage in tooltip
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
 });
-  
   
