@@ -1,0 +1,19 @@
+button {
+  display: inline-block;
+  margin-right: 10px;
+  margin-top: 10px;
+  background-color: #f27bf4;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 14px;
+  text-align: center;
+  text-decoration: none;
+  padding: 10px 15px;
+}
+
+button:hover {
+    background-color: #da56dd;
+}
