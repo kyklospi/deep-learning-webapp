@@ -3,16 +3,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const imageWrapper = document.getElementById('imageWrapper');
     const dropZone = document.getElementById('dropZone');
     const clearBtn = document.getElementById('clearBtn');  
-    const resultText = document.getElementById('result');
   
     let classifier;
   
     // Load the MobileNet classifier
     classifier = ml5.imageClassifier('MobileNet')
     console.log("Model loaded!");
-    preloadGroupedImages();
+    let labels = [];
+    let confidences = [];
+    preloadGroupedImages(labels, confidences);
+    createChart(labels, confidences);
 
-    function preloadGroupedImages() {
+    function preloadGroupedImages(labels, confidences) {
         const groups = {
             correct: ['mount-fuji-mural.jpeg', 'mount-fuji-temple-sakura.jpeg', 'mount-fuji-without-snow.jpeg'],
             false: ['mount-fuji-autumn.jpeg', 'mount-fuji-blur.jpeg', 'mount-fuji-far.jpeg']
@@ -31,14 +33,14 @@ document.addEventListener('DOMContentLoaded', () => {
     
             imageList.forEach((imgName) => {
                 const imgPath = `/images/${groupName}/${imgName}`;
-                handleImageFromURL(imgPath, imgName, groupContainer);
+                handleImageFromURL(imgPath, imgName, groupContainer, labels, confidences);
             });
     
             imageWrapper.appendChild(groupContainer);
         }
     }
 
-    function handleImageFromURL(url, fileName, parentDiv) {
+    function handleImageFromURL(url, fileName, parentDiv, labels, confidences) {
         const container = document.createElement('div');
         container.classList.add('image-container');
     
@@ -63,10 +65,8 @@ document.addEventListener('DOMContentLoaded', () => {
               .then(results => {
                 const topResult = results[0];
                 resultText.textContent = `Label: ${topResult.label}, Confidence: ${topResult.confidence.toFixed(2)}`;
-                // Prepare data to show chart
-                const labels = results.map(result => result.label);
-                const confidences = results.map(result => result.confidence * 100); 
-                createChart(labels, confidences);
+                labels.push(topResult.label);
+                confidences.push(topResult.confidence * 100);
               })
               .catch(err => {
                 resultText.textContent = 'Error classifying image.';
@@ -109,11 +109,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     .then(results => {
                         const topResult = results[0];
                         resultText.textContent = `Label: ${topResult.label}, Confidence: ${topResult.confidence.toFixed(2)}`;
-
-                        // Prepare data to show chart
-                        const labels = results.map(result => result.label);
-                        const confidences = results.map(result => result.confidence * 100); 
-                        createChart(labels, confidences)
                     })
                     .catch(err => {
                     console.error('Classification error:', err);
