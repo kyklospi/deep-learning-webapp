@@ -17,7 +17,33 @@ This project is a simple web app built with **Node.js**, **Express**, and **ml5.
 - Includes a clear/reset button to remove uploaded images
 
 ## 📁 Folder Structure
-project/ ├── public/ │ ├── css/ │ │ ├── index.css │ │ └── ea1.css │ ├── images/ │ │ ├── correct/ │ │ └── false/ │ └── js/ │ └── upload.js ├── routes/ │ └── ea1.js ├── views/ │ ├── index.ejs │ └── ea1.ejs ├── app.js └── README.md
+deep-learning-classifier/
+├── public/
+│   ├── css/
+│   │   ├── index.css          # Styles for homepage
+│   │   └── ea1.css            # Styles for image classification page
+│   ├── images/
+│   │   ├── correct/           # Preloaded images for correct classification
+│   │   │   ├── correct1.jpg
+│   │   │   ├── ...
+│   │   └── false/             # Preloaded images for false classification
+│   │       ├── false1.jpg
+│   │       ├── ...
+│   └── js/
+│       └── upload.js          # Image handling and classification logic
+│
+├── routes/
+│   └── ea1.js                 # Route for /ea1 (image classification page)
+│
+├── views/
+│   ├── index.ejs              # Homepage
+│   └── ea1.ejs                # Page with upload, drag-drop, and ML classifier
+│
+├── .gitignore                 # Files/folders to exclude from Git
+├── app.js                     # Main server file (Express setup)
+├── package.json               # Project dependencies and scripts
+├── package-lock.json          # Exact version lock of dependencies
+└── README.md                  # Project overview and instructions
 
 ## 🧠 Tech Stack
 
