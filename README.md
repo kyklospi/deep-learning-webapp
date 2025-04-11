@@ -16,31 +16,6 @@ This project is a simple web app built with **Node.js**, **Express**, and **ml5.
   - Predicted label and confidence
 - Includes a clear/reset button to remove uploaded images
 
-## 📁 Folder Structure
-deep-learning-webapp/
-├── public/
-│   ├── css/
-│   │   ├── index.css            # Styles for homepage
-│   │   └── ea1.css              # Styles for image classification page
-│   ├── images/
-│   │   ├── correct/             # Preloaded images for correct classification
-│   │   └── false/               # Preloaded images for false classification
-│   └── javascripts/
-│       └── ea1.js            # ML5 image handling logic
-│
-├── routes/
-│   └── ea1.js                   # Express route for /ea1
-│
-├── views/
-│   ├── index.ejs                # Homepage template
-│   └── ea1.ejs                  # Upload + classifier interface
-│
-├── .gitignore                   # Ignored files/folders
-├── app.js                       # Main Express app
-├── package.json                 # Project metadata & dependencies
-├── package-lock.json            # Exact versions of installed packages
-└── README.md                    # Project documentation
-
 ## 🧠 Tech Stack
 
 - [Node.js](https://nodejs.org/)
