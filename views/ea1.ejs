@@ -13,26 +13,33 @@
   </head>
   <body>
     <h1>Einsendeaufgabe 1</h1>
-    <h2>Image Classification and Confidence Visualization</h2>
+    <h2>Image Classification</h2>
     <p>Atika Rachmawati</p>
-
-    <h3>Upload up to 3 images, and we'll classify it for you!</h1>
     
-    <div class="drop-zone" id="dropZone">
-      Drag & drop images here or use the file input below.
-    </div>
-    
-    <label for="imageUpload" id="uploadLabel">Choose Images</label>
-    <input type="file" id="imageUpload" accept="image/*" multiple style="display: none;" />
-    
-    <button id="clearBtn">Clear Images</button>
+    <h3>Example Images of Mount Fuji in Japan</h3>
+    <!-- Image Display and Chart Section -->
     <div id="imageWrapper"></div>
     <br /><br />
     
-    <img id="imagePreview" style="max-width: 300px; display: none;" />
+    <!-- Bottom section (Drag and Drop and Buttons) -->
+    <h3>🖼 Your Image Classification</h3>
+    <!-- Uploaded Image Display and Chart Section -->
+    <br /><br />
+    <div id="uploadedImageWrapper"></div>
+    <br /><br />
 
-    <h3>Classification Results:</h3>
-    <canvas id="confidenceChart" width="400" height="200"></canvas>
+    <h3>Upload an image, and we'll classify it for you!</h3>
+
+    <div class="bottom-section">
+      <div class="drop-zone" id="dropZone">
+        Drag & drop images here or use the file input below.
+      </div>
+    
+      <label for="imageUpload" id="uploadLabel">Upload Image</label>
+      <input type="file" id="imageUpload" accept="image/*" multiple style="display: none;" />
+    
+      <button id="clearBtn">Clear Image</button>
+    </div>
 
     <!-- importing ea1.js into the project -->
     <script src="/javascripts/ea1.js" type="text/javascript"></script>

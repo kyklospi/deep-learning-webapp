@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const fileInput = document.getElementById('imageUpload');
     const imageWrapper = document.getElementById('imageWrapper');
+    const uploadedImageWrapper = document.getElementById('uploadedImageWrapper')
     const dropZone = document.getElementById('dropZone');
     const clearBtn = document.getElementById('clearBtn');  
   
@@ -9,12 +10,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Load the MobileNet classifier
     classifier = ml5.imageClassifier('MobileNet')
     console.log("Model loaded!");
-    let labels = [];
-    let confidences = [];
-    preloadGroupedImages(labels, confidences);
-    createChart(labels, confidences);
+    preloadGroupedImages();
 
-    function preloadGroupedImages(labels, confidences) {
+    function preloadGroupedImages() {
         const groups = {
             correct: ['mount-fuji-mural.jpeg', 'mount-fuji-temple-sakura.jpeg', 'mount-fuji-without-snow.jpeg'],
             false: ['mount-fuji-autumn.jpeg', 'mount-fuji-blur.jpeg', 'mount-fuji-far.jpeg']
@@ -33,96 +31,135 @@ document.addEventListener('DOMContentLoaded', () => {
     
             imageList.forEach((imgName) => {
                 const imgPath = `/images/${groupName}/${imgName}`;
-                handleImageFromURL(imgPath, imgName, groupContainer, labels, confidences);
+                handleImageFromURL(imgPath, imgName, groupContainer);
             });
     
             imageWrapper.appendChild(groupContainer);
         }
     }
 
-    function handleImageFromURL(url, fileName, parentDiv, labels, confidences) {
+    function handleImageFromURL(url, fileName, parentDiv) {
         const container = document.createElement('div');
-        container.classList.add('image-container');
-    
+        
+        // Create the name element above the image
         const name = document.createElement('p');
         name.textContent = `File: ${fileName}`;
         name.style.fontWeight = 'bold';
-    
+        name.style.textAlign = 'center'; // Center the file name
+        
         const img = document.createElement('img');
         img.src = url;
-    
+        
+        // Create the result text element below the image
         const resultText = document.createElement('p');
         resultText.textContent = 'Classifying...';
+        resultText.style.textAlign = 'center'; // Center the result text
     
-        container.appendChild(name);
-        container.appendChild(img);
-        container.appendChild(resultText);
+        // Create a container for the image and chart side by side
+        const imageChartContainer = document.createElement('div');
+        imageChartContainer.classList.add('image-and-chart-container'); // This will be the flex container
+        
+        // Create a container for the image
+        const imageContainer = document.createElement('div');
+        imageContainer.classList.add('image-container');
+        imageContainer.appendChild(name);
+        imageContainer.appendChild(img);
+        imageContainer.appendChild(resultText);
+        
+        // Create a container for the chart
+        const chartContainer = document.createElement('div');
+        chartContainer.classList.add('chart-container');
+        
+        // Append the image container and chart container to the flex container
+        imageChartContainer.appendChild(imageContainer);
+        imageChartContainer.appendChild(chartContainer);
+        
+        // Append everything to the parent div
+        container.appendChild(imageChartContainer);
         parentDiv.appendChild(container);
     
+        // Classify the image and create a chart once the image is loaded
         img.onload = () => {
-          if (classifier) {
-            classifier.classify(img)
-              .then(results => {
-                const topResult = results[0];
-                resultText.textContent = `Label: ${topResult.label}, Confidence: ${topResult.confidence.toFixed(2)}`;
-                labels.push(topResult.label);
-                confidences.push(topResult.confidence * 100);
-              })
-              .catch(err => {
-                resultText.textContent = 'Error classifying image.';
-                console.error(err);
-              });
-          } else {
-            resultText.textContent = 'Model not ready yet.';
-          }
-        };
-    }
-
-    const handleUploadedImages = (files) => {
-        imageWrapper.innerHTML = ''; // Clear old previews
-        const selectedFiles = Array.from(files).slice(0, 3); // Show max 3
-      
-        selectedFiles.forEach((file) => {
-            const url = URL.createObjectURL(file);
-      
-            const container = document.createElement('div');
-            container.classList.add('image-container');
-
-            const fileName = document.createElement('p');
-            fileName.textContent = `File: ${file.name}`;
-            fileName.style.fontWeight = 'bold';
-      
-            const img = document.createElement('img');
-            img.src = url;
-      
-            const resultText = document.createElement('p');
-            resultText.textContent = 'Classifying...';
-      
-            container.appendChild(fileName);
-            container.appendChild(img);
-            container.appendChild(resultText);
-            imageWrapper.appendChild(container);
-      
-            img.onload = () => {
-                if (classifier) {
-                    classifier.classify(img)
+            if (classifier) {
+                classifier.classify(img)
                     .then(results => {
                         const topResult = results[0];
                         resultText.textContent = `Label: ${topResult.label}, Confidence: ${topResult.confidence.toFixed(2)}`;
+                        
+                        // Create a chart for the image with the label and confidence
+                        createImageChart(chartContainer, topResult.label, topResult.confidence * 100);
                     })
                     .catch(err => {
+                        resultText.textContent = 'Error classifying image.';
+                        console.error(err);
+                    });
+            } else {
+                resultText.textContent = 'Model not ready yet.';
+            }
+        };
+    }                   
+
+    const handleUploadedImage = (file) => {
+        uploadedImageWrapper.innerHTML = '';
+
+        const container = document.createElement('div');
+        container.classList.add('base-upload-container')
+        const url = URL.createObjectURL(file);
+
+        const fileName = document.createElement('p');
+        fileName.textContent = `File: ${file.name}`;
+        fileName.style.fontWeight = 'bold';
+      
+        const img = document.createElement('img');
+        img.src = url;
+      
+        const resultText = document.createElement('p');
+        resultText.textContent = 'Classifying...';
+
+        // Create a container for the image and chart side by side
+        const imageChartContainer = document.createElement('div');
+        imageChartContainer.classList.add('uploaded-image-and-chart-container'); // This will be the flex container
+      
+        // Create a container for the image
+        const imageContainer = document.createElement('div');
+        imageContainer.classList.add('uploaded-image-container');
+        imageContainer.appendChild(fileName);
+        imageContainer.appendChild(img);
+        imageContainer.appendChild(resultText);
+
+        // Create a container for the chart
+        const chartContainer = document.createElement('div');
+        chartContainer.classList.add('uploaded-chart-container');
+      
+        // Append the image container and chart container to the flex container
+        imageChartContainer.appendChild(imageContainer);
+        imageChartContainer.appendChild(chartContainer);
+
+        // Append everything to the parent div
+        container.appendChild(imageChartContainer);
+        uploadedImageWrapper.appendChild(container);            
+      
+        img.onload = () => {
+            if (classifier) {
+                classifier.classify(img)
+                .then(results => {
+                    const topResult = results[0];
+                    resultText.textContent = `Label: ${topResult.label}, Confidence: ${topResult.confidence.toFixed(2)}`;
+                    // Create a chart for the image with the label and confidence
+                    createImageChart(chartContainer, topResult.label, topResult.confidence * 100);
+                })
+                .catch(err => {
                     console.error('Classification error:', err);
                     resultText.textContent = 'Error classifying image.';
-                    });
-                } else {
+                });
+            } else {
                 resultText.textContent = 'Model not ready yet.';
-                }
-            };
-        });
+            }
+        };
     };
     
     fileInput.addEventListener('change', (e) => {
-        handleUploadedImages(e.target.files);
+        handleUploadedImage(e.target.files[0]);
     });
     
       // Drag & Drop handlers
@@ -139,40 +176,49 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         dropZone.classList.remove('dragover');
         if (e.dataTransfer.files) {
-          handleUploadedImages(e.dataTransfer.files);
+          handleUploadedImage(e.dataTransfer.files[0]);
         }
     });
     
     // Clear Button
     clearBtn.addEventListener('click', () => {
-        imageWrapper.innerHTML = '';
+        uploadedImageWrapper.innerHTML = '';
         fileInput.value = ''; // Reset file input
     });
 
     // Function to create the chart using Chart.js
-    function createChart(labels, confidences) {
-        const ctx = document.getElementById('confidenceChart').getContext('2d');
-        
-        const confidenceChart = new Chart(ctx, {
-            type: 'bar',  // Use a bar chart
+    function createImageChart(chartContainer, label, confidence) {
+        const canvas = document.createElement('canvas');
+        canvas.width = 250;  // Adjust width of the chart
+        canvas.height = 150; // Adjust height of the chart
+        chartContainer.appendChild(canvas);
+    
+        // Creating a chart for each image with its specific label and confidence value
+        new Chart(canvas, {
+            type: 'bar',
             data: {
-                labels: labels,  // The class labels
+                labels: [label], // The label will be on the X-axis
                 datasets: [{
                     label: 'Confidence (%)',
-                    data: confidences,  // The confidence percentages
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)',  // Light blue bars
-                    borderColor: 'rgba(54, 162, 235, 1)',  // Dark blue border
+                    data: [confidence], // The confidence value of the image
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)', // Light blue bars
+                    borderColor: 'rgba(54, 162, 235, 1)', // Dark blue border
                     borderWidth: 1
                 }]
             },
             options: {
                 responsive: true,
                 scales: {
+                    x: {
+                        title: {
+                            display: true
+                        }
+                    },
                     y: {
                         beginAtZero: true,
-                        max: 100,  // Set max to 100% for the Y axis
+                        max: 100,
                         ticks: {
-                            stepSize: 10  // Show ticks every 10%
+                            stepSize: 10
                         }
                     }
                 },
@@ -180,7 +226,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     tooltip: {
                         callbacks: {
                             label: function(tooltipItem) {
-                                return tooltipItem.raw.toFixed(2) + '%';  // Show confidence as percentage in tooltip
+                                return tooltipItem.raw.toFixed(2) + '%'; // Show confidence as percentage in tooltip
                             }
                         }
                     }
