@@ -1,19 +1,69 @@
-button {
-  display: inline-block;
-  margin-right: 10px;
-  margin-top: 10px;
-  background-color: #f27bf4;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-family: inherit;
-  font-size: 14px;
-  text-align: center;
-  text-decoration: none;
-  padding: 10px 15px;
+/* public/css/index.css */
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: #f4f6f8;
+  color: #2c3e50;
 }
 
+/* Layout wrapper */
+.wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+/* Hero section (titles) */
+.hero-section {
+  margin-bottom: 40px;
+}
+
+h1 {
+  font-size: 3em;
+  font-weight: 700;
+  color: #34495e;
+  margin-bottom: 10px;
+}
+
+h2 {
+  font-size: 1.8em;
+  font-weight: 500;
+  color: #5969b6;
+  margin-bottom: 20px;
+}
+
+p {
+  font-size: 1em;
+  color: #666;
+}
+
+/* Call-to-action section */
+.cta-section {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+/* Button styling */
+.button-primary, button {
+  padding: 14px 28px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #5969b6;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.button-primary:hover,
 button:hover {
-    background-color: #da56dd;
+  background-color: #4455ad;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }

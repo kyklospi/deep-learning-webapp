@@ -1,17 +1,27 @@
 /* public/css/ea1.css */
 
+body {
+  margin: 20px;
+  padding: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: #f4f6f8;
+  color: #2c3e50;
+}
+
 /* Heading styles */
 h1 {
-  font-size: 2.5em;
+  font-size: 3em;
   font-weight: 700;
-  color: #2c3e50;
+  color: #34495e;
+  margin-bottom: 10px;
   text-align: center;
 }
 
 h2 {
   font-size: 1.8em;
   font-weight: 500;
-  color: #2c3e50;
+  color: #5969b6;
+  margin-bottom: 10px;
   text-align: center;
 }
 
@@ -63,15 +73,15 @@ p {
 
 #uploadLabel {
   margin-right: 20px; /* Space between buttons */
-  background-color: #5969b6; /* Light Blue */
+  background-color: #5969b6;
 }
 
 #clearBtn {
-  background-color: #e74c3c;  /* Red color for 'Clear' */
+  background-color: #e74c3c;
 }
 
 #clearBtn:hover {
-  background-color: #c0392b; /* Darker red on hover */
+  background-color: #c0392b;
 }
 
 .drop-zone {
