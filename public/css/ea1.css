@@ -193,3 +193,16 @@ canvas {
   gap: 20px;
   margin-bottom: 30px;
 }
+
+ul {
+  margin-bottom: 30px;
+}
+li {
+  margin-bottom: 10px;
+}
+.code {
+  background-color: #f4f4f4;
+  padding: 8px 12px;
+  border-left: 4px solid #007BFF;
+  font-family: monospace;
+}

@@ -38,6 +38,97 @@
       <input type="file" id="imageUpload" accept="image/*" multiple style="display: none;" />
     
       <button id="clearBtn">Clear Image</button>
+      <br /><br />
+    </div>
+
+    <div class="discussion-section">
+      <br /><br />
+      <br /><br />
+      <h2>Discussion</h2>
+      <p>Die Klassifikationsergebnisse mit dem ml5.js MobileNet-Modell zeigen einen deutlichen Unterschied zwischen korrekt und falsch erkannten Bildern des Mount Fuji. Die drei korrekten Klassifikationen - „mount-fuji-without-snow.jpeg“ (97%), „mount-fuji-temple-sakura.jpeg“ (38,5%) und „mount-fuji-mural.jpeg“ (17,7%) - wurden alle als „volcano“ erkannt, was der tatsächlichen Kategorie von Mount Fuji entspricht. 
+        Nur eines der Bilder erzielte jedoch eine hohe Konfidenz, was darauf hinweist, dass klare, unverfälschte Aufnahmen (wie das Bild ohne Schnee) die Erkennung erleichtern. Die niedrigeren Werte bei der Wandmalerei und dem Tempelmotiv lassen sich durch visuelle Ablenkungen oder eine künstlerische Darstellung erklären.
+      </p>
+      <p>Die Fehlklassifikationen - „monitor“ (17,9%), „mosquito net“ (20,3%) und „alp“ (45,4%) - zeigen, dass das Modell mit unscharfen oder weit entfernten Bildern Schwierigkeiten hat. Besonders bei den verschwommenen und weit entfernten Aufnahmen gehen wichtige Merkmale des Berges verloren oder sind nicht eindeutig genug. 
+        Die Klassifizierung als „Alp“ deutet darauf hin, dass das Modell entfernte Berglandschaften mit den Alpen verwechselt, möglicherweise wegen ähnlicher Formen oder Farben. Insgesamt zeigt sich, dass Kontext, Bildschärfe und Bildausschnitt eine große Rolle bei der korrekten Erkennung spielen. 
+        Das verdeutlicht die Grenzen vortrainierter Modelle, wenn Objekte verdeckt, abstrahiert oder ungewöhnlich dargestellt werden.
+      </p>
+    </div>
+    <div>
+      <br /><br />
+      <h2>Documentation</h2>
+      <p><strong>Technischer Aufbau:</strong> Die Anwendung ist als Webprojekt umgesetzt und besteht aus einer Express.js-basierten Node.js-Anwendung im Backend. Das Frontend ist HTML/CSS-basiert und nutzt moderne JavaScript-Bibliotheken (siehe Verwendete Frameworks und Bibliotheken).
+        Die Klassifikation erfolgt vollständig im Browser, ohne dass ein Server-Backend benötigt wird.
+      </p>
+      <p><strong>Logik der Implementierung:</strong> Beim Laden der Seite werden sechs Beispielbilder automatisch klassifiziert. Die Ergebnisse werden in zwei Gruppen dargestellt: <strong>korrekt klassifizierte</strong> und <strong>falsch klassifizierte</strong> Bilder.
+        Jedes Bild zeigt Dateinamen, das top-prädizierte Label, die Konfidenz, und ein Balkendiagramm mit allen Konfidenz-Werten (Top-Kategorien).
+        Nutzer*innen können eigene Bilder hochladen oder per Drag & Drop hinzufügen, um eine Live-Klassifikation zu erhalten.
+      </p>
+      <p><strong>Beobachtungen & Resultate:</strong> Die drei korrekt klassifizierten Bilder wurden mit dem Label <strong>„volcano“</strong> erkannt, was der Realität entspricht, da Mount Fuji ein Vulkan ist. Bilder mit klarem Fokus und ohne visuelle Ablenkung erzielten höhere Konfidenzwerte (bis zu 97%).
+        Falsch klassifizierte Bilder wie „monitor“ oder „mosquito net“ entstanden bei unscharfen oder weit entfernten Motiven - hier hat das Modell wesentliche Merkmale nicht erkannt oder fehlinterpretiert.
+      </p>
+      <p><strong>Wichtige Erkenntnisse:</strong> Vortrainierte Modelle wie MobileNet sind nicht perfekt, besonders bei Bildern mit ungewöhnlicher Perspektive, Unschärfe oder visuellen Störungen.
+        Die Konfidenzwerte geben einen guten Hinweis darauf, wie sicher das Modell bei seiner Klassifikation ist.
+        Eine klare, strukturierte Bilddarstellung verbessert die Klassifikationsergebnisse spürbar.
+      </p>
+      <br /><br />   
+      <h3>Technische Besonderheiten der Lösung</h3>
+      <ul>
+        <li>
+          <strong>Clientseitiges Machine Learning</strong><br>
+          Die gesamte Klassifikation erfolgt im Browser, um Bilder ohne Serververbindung zu klassifizieren - es ist kein Backend notwendig.
+        </li>
+        <li>
+          <strong>Visuelle Rückmeldung durch Diagramme</strong><br>
+          Die Konfidenzwerte der Klassifikation werden als Balkendiagramme mit Prozentangabe dargestellt.
+        </li>
+        <li>
+          <strong>Gruppierung der Bilder</strong><br>
+          Beispielbilder sind in korrekt und falsch klassifizierte Gruppen aufgeteilt, um Unterschiede anschaulich zu machen.
+        </li>
+        <li>
+          <strong>Drag & Drop sowie Datei-Upload:</strong><br>
+          Nutzer*innen können eigene Bilder hochladen oder direkt in das Drop-Feld ziehen - beides wird unterstützt.
+        </li>
+        <li>
+          <strong>Dynamisches DOM & Modularer Aufbau:</strong><br>
+          Für jedes Bild werden dynamisch Bildcontainer, Klassifikationsergebnisse und Diagramme erzeugt.
+        </li>
+        <li>
+          <strong>Fehlertoleranz:</strong><br>
+          Fehler beim Klassifizieren (z.B. ungültige Bilder) werden abgefangen und per console.error() auch im Entwickler-Log sichtbar gemacht.
+        </li>
+      </ul>
+      <h3>Verwendete Frameworks und Bibliotheken</h3>
+      <ul>
+        <li>
+          <strong>Express.js</strong><br>
+          Ein minimalistisches Webframework für Node.js zur Erstellung von Serveranwendungen. Hier wird es verwendet, um statische Dateien bereitzustellen (Bilder, CSS, JavaScript) und die HTML-Seite auszuliefern.
+        </li>
+        <li>
+          <strong>ml5.js</strong><br>
+          Ein einfaches Interface für maschinelles Lernen im Browser, basierend auf TensorFlow.js. Es wird verwendet, um das vortrainierte <em>MobileNet</em>-Modell zu laden und Bilder clientseitig zu klassifizieren.
+        </li>
+        <li>
+          <strong>p5.js</strong> (inkl. <code>p5.dom</code>)<br>
+          Dient zur DOM-Manipulation und als kreative JavaScript-Bibliothek. Wird hier hauptsächlich zur Kompatibilität mit ml5.js eingebunden.
+        </li>
+        <li>
+          <strong>Chart.js</strong><br>
+          Eine beliebte JavaScript-Bibliothek zur Visualisierung von Daten. Hier verwendet, um die Klassifikationsergebnisse grafisch (als Balkendiagramm) darzustellen.
+        </li>
+        <li>
+          <strong>chartjs-plugin-datalabels</strong><br>
+          Ein Plugin für Chart.js, das die Anzeige von Prozentwerten direkt auf Balken im Diagramm ermöglicht.
+        </li>
+      </ul> 
+      <h3>Quellen und Referenzen</h3>
+      <ul>
+        <li><a href="https://ml5js.org/" target="_blank">ml5.js Dokumentation</a></li>
+        <li><a href="https://www.chartjs.org/" target="_blank">Chart.js Dokumentation</a></li>
+        <li><a href="https://p5js.org/" target="_blank">p5.js Dokumentation</a></li>
+        <li><a href="https://chartjs-plugin-datalabels.netlify.app/" target="_blank">Chartjs Plugin Datalabels</a></li>
+        <li><a href="https://expressjs.com/" target="_blank">Express.js Dokumentation</a></li>
+      </ul>
     </div>
 
     <!-- importing ea1.js into the project -->
