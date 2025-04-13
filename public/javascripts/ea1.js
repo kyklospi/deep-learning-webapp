@@ -84,10 +84,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 classifier.classify(img)
                     .then(results => {
                         const topResult = results[0];
-                        resultText.textContent = `Label: ${topResult.label}, Confidence: ${topResult.confidence.toFixed(2)}`;
+                        resultText.textContent = `Top Result: ${topResult.label}, Confidence: ${topResult.confidence.toFixed(2)}`;
+
+                        let labels = [];
+                        results.forEach((element) => {
+                            labels.push(element.label);
+                        });
+                        let confidences = [];
+                        results.forEach((element) => {
+                            confidences.push(element.confidence * 100);
+                        });
                         
                         // Create a chart for the image with the label and confidence
-                        createImageChart(chartContainer, topResult.label, topResult.confidence * 100);
+                        createImageChart(chartContainer, labels, confidences);
                     })
                     .catch(err => {
                         resultText.textContent = 'Error classifying image.';
@@ -144,9 +153,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 classifier.classify(img)
                 .then(results => {
                     const topResult = results[0];
-                    resultText.textContent = `Label: ${topResult.label}, Confidence: ${topResult.confidence.toFixed(2)}`;
+                    resultText.textContent = `Top Result: ${topResult.label}, Confidence: ${topResult.confidence.toFixed(2)}`;
+
+                    let labels = [];
+                    results.forEach((element) => {
+                        labels.push(element.label);
+                    });
+                    let confidences = [];
+                    results.forEach((element) => {
+                        confidences.push(element.confidence * 100);
+                    });
+
                     // Create a chart for the image with the label and confidence
-                    createImageChart(chartContainer, topResult.label, topResult.confidence * 100);
+                    createImageChart(chartContainer, labels, confidences);
                 })
                 .catch(err => {
                     console.error('Classification error:', err);
@@ -186,34 +205,61 @@ document.addEventListener('DOMContentLoaded', () => {
         fileInput.value = ''; // Reset file input
     });
 
-    // Function to create the chart using Chart.js
-    function createImageChart(chartContainer, label, confidence) {
+    // Function to create bar chart using Chart.js
+    function createImageChart(chartContainer, labels, confidences) {
         const canvas = document.createElement('canvas');
-        canvas.width = 250;  // Adjust width of the chart
-        canvas.height = 150; // Adjust height of the chart
+        canvas.width = 600;
+        canvas.height = 400;
         chartContainer.appendChild(canvas);
     
-        // Creating a chart for each image with its specific label and confidence value
         new Chart(canvas, {
             type: 'bar',
             data: {
-                labels: [label], // The label will be on the X-axis
+                labels: labels,
                 datasets: [{
-                    label: 'Confidence (%)',
-                    data: [confidence], // The confidence value of the image
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)', // Light blue bars
-                    borderColor: 'rgba(54, 162, 235, 1)', // Dark blue border
-                    borderWidth: 1
+                    data: confidences,
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1,
                 }]
             },
             options: {
                 responsive: true,
-                scales: {
-                    x: {
-                        title: {
-                            display: true
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    title: {
+                        display: true,
+                        text: 'Confidence (%)',
+                        font: {
+                            size: 14,
+                            weight: 'bold'
+                        },
+                        color: '#333',
+                        padding: { bottom: 30 }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                return tooltipItem.raw.toFixed(2) + '%';
+                            }
                         }
                     },
+                    datalabels: {
+                        anchor: 'end',       // Anchor at the end of the bar
+                        align: 'start',      // Align above the bar
+                        offset: -20,         // Move it slightly above
+                        formatter: function(value) {
+                            return value.toFixed(1) + '%';
+                        },
+                        color: '#000',
+                        font: {
+                            weight: 'normal'
+                        }
+                    }
+                },
+                scales: {
                     y: {
                         beginAtZero: true,
                         max: 100,
@@ -221,18 +267,11 @@ document.addEventListener('DOMContentLoaded', () => {
                             stepSize: 10
                         }
                     }
-                },
-                plugins: {
-                    tooltip: {
-                        callbacks: {
-                            label: function(tooltipItem) {
-                                return tooltipItem.raw.toFixed(2) + '%'; // Show confidence as percentage in tooltip
-                            }
-                        }
-                    }
                 }
-            }
+            },
+            plugins: [ChartDataLabels]
         });
     }
+    
 });
   
