@@ -45,89 +45,89 @@
       <br /><br />
       <br /><br />
       <h2>Discussion</h2>
-      <p>Die Klassifikationsergebnisse mit dem ml5.js MobileNet-Modell zeigen einen deutlichen Unterschied zwischen korrekt und falsch erkannten Bildern des Mount Fuji. Die drei korrekten Klassifikationen - „mount-fuji-without-snow.jpeg“ (97%), „mount-fuji-temple-sakura.jpeg“ (38,5%) und „mount-fuji-mural.jpeg“ (17,7%) - wurden alle als „volcano“ erkannt, was der tatsächlichen Kategorie von Mount Fuji entspricht. 
-        Nur eines der Bilder erzielte jedoch eine hohe Konfidenz, was darauf hinweist, dass klare, unverfälschte Aufnahmen (wie das Bild ohne Schnee) die Erkennung erleichtern. Die niedrigeren Werte bei der Wandmalerei und dem Tempelmotiv lassen sich durch visuelle Ablenkungen oder eine künstlerische Darstellung erklären.
+      <p>The classification results using the ml5.js MobileNet model show a clear distinction between correctly and incorrectly recognized images of Mount Fuji. The three correct classifications - 'mount-fuji-without-snow.jpeg' (97%), 'mount-fuji-temple-sakura.jpeg' (38.5%), and 'mount-fuji-mural.jpeg' (17.7%) - were all identified as 'volcano,' which corresponds to the actual category of Mount Fuji. 
+        However, only one of the images achieved a high confidence score, indicating that clear, unaltered shots (such as the image without snow) make recognition easier. The lower scores for the mural and the temple motif at the foreground can be explained by an artistic representation or visual distractions.
       </p>
-      <p>Die Fehlklassifikationen - „monitor“ (17,9%), „mosquito net“ (20,3%) und „alp“ (45,4%) - zeigen, dass das Modell mit unscharfen oder weit entfernten Bildern Schwierigkeiten hat. Besonders bei den verschwommenen und weit entfernten Aufnahmen gehen wichtige Merkmale des Berges verloren oder sind nicht eindeutig genug. 
-        Die Klassifizierung als „Alp“ deutet darauf hin, dass das Modell entfernte Berglandschaften mit den Alpen verwechselt, möglicherweise wegen ähnlicher Formen oder Farben. Insgesamt zeigt sich, dass Kontext, Bildschärfe und Bildausschnitt eine große Rolle bei der korrekten Erkennung spielen. 
-        Das verdeutlicht die Grenzen vortrainierter Modelle, wenn Objekte verdeckt, abstrahiert oder ungewöhnlich dargestellt werden.
+      <p>The misclassifications - 'monitor' (17.9%), 'mosquito net' (20.3%), and 'alp' (45.4%) - show that the model struggles with blurry or distant images. Especially in the blurry and faraway shots, important features of the mountain are lost or not distinct enough. 
+        The classification as 'Alp' suggests that the model confuses distant mountain landscapes with the Alps, possibly due to similar shapes or colors. Overall, it becomes evident that context, image sharpness, and framing play a significant role in accurate recognition. 
+        This highlights the limitations of pre-trained models when objects are obscured, abstracted, or depicted in unusual ways.
       </p>
     </div>
     <div>
       <br /><br />
       <h2>Documentation</h2>
-      <p><strong>Technischer Aufbau:</strong> Die Anwendung ist als Webprojekt umgesetzt und besteht aus einer Express.js-basierten Node.js-Anwendung im Backend. Das Frontend ist HTML/CSS-basiert und nutzt moderne JavaScript-Bibliotheken (siehe Verwendete Frameworks und Bibliotheken).
-        Die Klassifikation erfolgt vollständig im Browser, ohne dass ein Server-Backend benötigt wird.
+      <p><strong>Technical Structure:</strong> The application is implemented as a web project and consists of a Node.js backend based on Express.js. The frontend is built with HTML/CSS and uses modern JavaScript libraries (see Frameworks and Libraries).
+        The classification takes place entirely in the browser, without requiring a server backend.
       </p>
-      <p><strong>Logik der Implementierung:</strong> Beim Laden der Seite werden sechs Beispielbilder automatisch klassifiziert. Die Ergebnisse werden in zwei Gruppen dargestellt: <strong>korrekt klassifizierte</strong> und <strong>falsch klassifizierte</strong> Bilder.
-        Jedes Bild zeigt Dateinamen, das top-prädizierte Label, die Konfidenz, und ein Balkendiagramm mit allen Konfidenz-Werten (Top-Kategorien).
-        Nutzer*innen können eigene Bilder hochladen oder per Drag & Drop hinzufügen, um eine Live-Klassifikation zu erhalten.
+      <p><strong>Implementation Logic:</strong> When the page loads, six sample images are automatically classified. The results are displayed in two groups: <strong>correctly classified</strong> and <strong>incorrectly classified</strong> images.
+        Each image displays the filename, the top-predicted label, the confidence score, and a bar chart showing all confidence values (top categories).
+        Users can upload their own images or add them via drag and drop to receive a live classification.
       </p>
-      <p><strong>Beobachtungen & Resultate:</strong> Die drei korrekt klassifizierten Bilder wurden mit dem Label <strong>„volcano“</strong> erkannt, was der Realität entspricht, da Mount Fuji ein Vulkan ist. Bilder mit klarem Fokus und ohne visuelle Ablenkung erzielten höhere Konfidenzwerte (bis zu 97%).
-        Falsch klassifizierte Bilder wie „monitor“ oder „mosquito net“ entstanden bei unscharfen oder weit entfernten Motiven - hier hat das Modell wesentliche Merkmale nicht erkannt oder fehlinterpretiert.
+      <p><strong>Observations & Results:</strong> The three correctly classified images were identified with the label <strong>'volcano'</strong>, which is accurate since Mount Fuji is a volcano. Images with a clear focus and no visual distractions achieved higher confidence scores (up to 97%).
+        Incorrect classifications such as 'monitor' or 'mosquito net' occurred with blurry or distant subjects - in these cases, the model failed to recognize or misinterpreted key features.
       </p>
-      <p><strong>Wichtige Erkenntnisse:</strong> Vortrainierte Modelle wie MobileNet sind nicht perfekt, besonders bei Bildern mit ungewöhnlicher Perspektive, Unschärfe oder visuellen Störungen.
-        Die Konfidenzwerte geben einen guten Hinweis darauf, wie sicher das Modell bei seiner Klassifikation ist.
-        Eine klare, strukturierte Bilddarstellung verbessert die Klassifikationsergebnisse spürbar.
+      <p><strong>Key Insights:</strong> Pre-trained models like MobileNet are not perfect, especially when dealing with images that have unusual perspectives, blurriness, or visual disturbances.
+        Confidence scores provide a good indication of how certain the model is in its classification.
+        A clear, well-structured image presentation noticeably improves classification results.
       </p>
       <br /><br />   
-      <h3>Technische Besonderheiten der Lösung</h3>
+      <h3>Technical Highlights of the Solution</h3>
       <ul>
         <li>
-          <strong>Clientseitiges Machine Learning</strong><br>
-          Die gesamte Klassifikation erfolgt im Browser, um Bilder ohne Serververbindung zu klassifizieren - es ist kein Backend notwendig.
+          <strong>Client-Side Machine Learning</strong><br>
+          All classification is performed in the browser to allow image classification without a server connection – no backend is required.
         </li>
         <li>
-          <strong>Visuelle Rückmeldung durch Diagramme</strong><br>
-          Die Konfidenzwerte der Klassifikation werden als Balkendiagramme mit Prozentangabe dargestellt.
+          <strong>Visual Feedback Through Charts</strong><br>
+          The confidence scores from the classification are displayed as bar charts with percentage values.
         </li>
         <li>
-          <strong>Gruppierung der Bilder</strong><br>
-          Beispielbilder sind in korrekt und falsch klassifizierte Gruppen aufgeteilt, um Unterschiede anschaulich zu machen.
+          <strong>Image Grouping</strong><br>
+          Sample images are divided into correctly and incorrectly classified groups to clearly illustrate the differences.
         </li>
         <li>
-          <strong>Drag & Drop sowie Datei-Upload:</strong><br>
-          Nutzer*innen können eigene Bilder hochladen oder direkt in das Drop-Feld ziehen - beides wird unterstützt.
+          <strong>Drag & Drop and File Upload</strong><br>
+          Users can upload their own images or drag them directly into the drop area - both options are supported.
         </li>
         <li>
-          <strong>Dynamisches DOM & Modularer Aufbau:</strong><br>
-          Für jedes Bild werden dynamisch Bildcontainer, Klassifikationsergebnisse und Diagramme erzeugt.
+          <strong>Dynamic DOM & Modular Structure</strong><br>
+          For each image, image containers, classification results, and charts are generated dynamically.
         </li>
         <li>
-          <strong>Fehlertoleranz:</strong><br>
-          Fehler beim Klassifizieren (z.B. ungültige Bilder) werden abgefangen und per console.error() auch im Entwickler-Log sichtbar gemacht.
+          <strong>Error Tolerance</strong><br>
+          Errors during classification (e.g., invalid images) are caught and logged in the developer console using console.error().
         </li>
       </ul>
-      <h3>Verwendete Frameworks und Bibliotheken</h3>
+      <h3>Used Frameworks and Libraries</h3>
       <ul>
         <li>
           <strong>Express.js</strong><br>
-          Ein minimalistisches Webframework für Node.js zur Erstellung von Serveranwendungen. Hier wird es verwendet, um statische Dateien bereitzustellen (Bilder, CSS, JavaScript) und die HTML-Seite auszuliefern.
+          A minimalist web framework for Node.js used to create server applications. In this case, it is used to serve static files (images, CSS, JavaScript) and deliver the HTML page.
         </li>
         <li>
           <strong>ml5.js</strong><br>
-          Ein einfaches Interface für maschinelles Lernen im Browser, basierend auf TensorFlow.js. Es wird verwendet, um das vortrainierte <em>MobileNet</em>-Modell zu laden und Bilder clientseitig zu klassifizieren.
+          A simple interface for machine learning in the browser, based on TensorFlow.js. It is used to load the pre-trained <em>MobileNet</em> model and classify images on the client-side.
         </li>
         <li>
           <strong>p5.js</strong> (inkl. <code>p5.dom</code>)<br>
-          Dient zur DOM-Manipulation und als kreative JavaScript-Bibliothek. Wird hier hauptsächlich zur Kompatibilität mit ml5.js eingebunden.
+          Used for DOM manipulation and as a creative JavaScript library. Here, it is mainly integrated for compatibility with ml5.js.
         </li>
         <li>
           <strong>Chart.js</strong><br>
-          Eine beliebte JavaScript-Bibliothek zur Visualisierung von Daten. Hier verwendet, um die Klassifikationsergebnisse grafisch (als Balkendiagramm) darzustellen.
+          A popular JavaScript library for data visualization. Here, it is used to graphically display the classification results (as a bar chart).
         </li>
         <li>
           <strong>chartjs-plugin-datalabels</strong><br>
-          Ein Plugin für Chart.js, das die Anzeige von Prozentwerten direkt auf Balken im Diagramm ermöglicht.
+          A plugin for Chart.js that enables the display of percentage values directly on the bars in the chart.
         </li>
       </ul> 
-      <h3>Quellen und Referenzen</h3>
+      <h3>Sources and References</h3>
       <ul>
-        <li><a href="https://ml5js.org/" target="_blank">ml5.js Dokumentation</a></li>
-        <li><a href="https://www.chartjs.org/" target="_blank">Chart.js Dokumentation</a></li>
-        <li><a href="https://p5js.org/" target="_blank">p5.js Dokumentation</a></li>
+        <li><a href="https://ml5js.org/" target="_blank">ml5.js Documentation</a></li>
+        <li><a href="https://www.chartjs.org/" target="_blank">Chart.js Documentation</a></li>
+        <li><a href="https://p5js.org/" target="_blank">p5.js Documentation</a></li>
         <li><a href="https://chartjs-plugin-datalabels.netlify.app/" target="_blank">Chartjs Plugin Datalabels</a></li>
-        <li><a href="https://expressjs.com/" target="_blank">Express.js Dokumentation</a></li>
+        <li><a href="https://expressjs.com/" target="_blank">Express.js Documentation</a></li>
       </ul>
     </div>
 
