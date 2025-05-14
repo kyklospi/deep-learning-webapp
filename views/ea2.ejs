@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Regression with Feed-Forward Neural Network - Einsendeaufgabe 2</title>
+        <!-- Import TensorFlow.js -->
+        <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0/dist/tf.min.js"></script>
+        <!-- Import tfjs-vis -->
+        <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-vis@1.0.2/dist/tfjs-vis.umd.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+        <link rel="stylesheet" href="/css/ea2.css" />
+    </head>
+    <body>
+        <h1>Regression with Feed-Forward Neural Network</h1>
+        <h2>Einsendeaufgabe 2</h2>
+        <p>Atika Rachmawati</p>
+
+        <div class="row">
+            <div>
+                <div class="plot-title">Clean Data</div>
+                <div class="chart-container">
+                    <canvas id="chartClean" width="600" height="400"></canvas>
+                </div>
+            </div>
+            <div>
+                <div class="plot-title">Noisy Data</div>
+                <div class="chart-container">
+                    <canvas id="chartNoisy" width="600" height="400"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div>
+                <div class="plot-title">Clean Train Model</div>
+                <div class="chart-container">
+                    <canvas id="chartCleanTrain" width="600" height="400"></canvas>
+                </div>
+            </div>
+            <div>
+                <div class="plot-title">Clean Test Model</div>
+                <div class="chart-container">
+                    <canvas id="chartCleanTest" width="600" height="400"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div>
+                <div class="plot-title">Best-Fit Train Noisy Model</div>
+                <div class="chart-container">
+                    <canvas id="chartBestTrain" width="600" height="400"></canvas>
+                </div>
+            </div>
+            <div>
+                <div class="plot-title">Best-Fit Test Noisy Model</div>
+                <div class="chart-container">
+                    <canvas id="chartBestTest" width="600" height="400"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div>
+                <div class="plot-title">Overfit Train Noisy Model</div>
+                <div class="chart-container">
+                    <canvas id="chartOverfitTrain" width="600" height="400"></canvas>
+                </div>
+            </div>
+            <div>
+                <div class="plot-title">Overfit Test Noisy Model</div>
+                <div class="chart-container">
+                    <canvas id="chartOverfitTest" width="600" height="400"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="discussion">
+            <h2>Discussion</h2>
+            <p>
+                The model trained on noise-free data generalizes well, as expected training and test loss are nearly identical due to the absence of label noise. 
+                In contrast, the noisy dataset introduces uncertainty into the labels. When trained with a smaller number of epochs (e.g., 300), the model is able to generalize reasonably (best-fit).
+                However, training the same model on noisy data for too many epochs (e.g., 1000) leads to overfitting, where the model learns to fit the noise, resulting in a much lower training loss but higher test loss.
+            </p>
+            <p>
+                This behavior illustrates that increasing the number of training examples would likely improve generalization.
+                These experiments demonstrate how training epochs, data quality, and architecture complexity affect model performance and robustness.
+                Visualizations of predictions and MSE support the conclusions drawn from this analysis.
+            </p>
+          </div>
+          
+          <br /><br />
+          <div class="documentation">
+            <h2>Documentation</h2>
+            <p><strong>Technical Structure:</strong>
+                The application is implemented as a web project and consists of a Node.js backend based on Express.js. The frontend is built with HTML/CSS and uses modern JavaScript libraries (see Frameworks and Libraries).
+                The neural network training and evaluation takes place entirely in the browser, without requiring a server backend.
+            </p>
+            <p><strong>Implementation Logic:</strong>
+                The goal was to train and evaluate a neural network on a polynomial ground-truth function using noisy and noise-free data. 
+                A feedforward neural network (2 hidden layers, 100 neurons each, ReLU activation, linear output) was used. 
+                Training was performed with the Adam optimizer and mean squared error (MSE) as loss. 
+                Experiments involved training on clean data, noisy data with limited epochs (best-fit), and noisy data with extended training (overfitting).
+                Sources used included TensorFlow.js documentation, math resources for Gaussian noise, and visualization best practices.
+            </p>
+            <p><strong>Observations & Results:</strong>
+                The results clearly demonstrated overfitting when training too long on noisy data, shown by low training loss but high test loss.
+                All models and results were visualized in real-time using Chart.js.
+                Model parameters, performance metrics, and loss values were shown directly under each plot to support interpretation.
+            </p>
+            <p><strong>Key Insights:</strong>
+                These experiments demonstrate how training epochs, data quality, and architecture complexity affect model performance and robustness.
+                A more balanced training (early stopping or regularization) could mitigate overfitting.
+                Additionally, increasing the number of training examples would likely improve generalization.
+            </p>
+
+            <br /><br />
+            <h3>Technical Highlights of the Solution</h3>
+            <ul>
+              <li>
+                <strong>Client-Side Machine Learning</strong><br>
+                All model training and evaluation is performed in the browser to allow training and evaluation without a server connection - no backend is required.
+              </li>
+              <li>
+                <strong>Visual Feedback Through Charts</strong><br>
+                The dataset, models, predictions and training results are displayed as charts with different colours for easy identification.
+                Mean Squared Error loss are shown below the chart with 4-digits-decimal.
+              </li>
+              <li>
+                <strong>Dataset Grouping</strong><br>
+                Train and test model are divided into green and blue colour respectively to clearly illustrate the differences.
+              </li>
+              <li>
+                <strong>Dynamic DOM & Modular Structure</strong><br>
+                For each dataset and training results, charts are generated dynamically.
+              </li>
+              <li>
+                <strong>Error Tolerance</strong><br>
+                Errors during training and evaluation are caught and logged in the developer console using console.error().
+              </li>
+            </ul>
+      
+            <h3>Used Frameworks and Libraries</h3>
+            <ul>
+                <li><strong>Express.js</strong><br>
+                    A minimalist web framework for Node.js used to create server applications. In this case, it is used to serve static files (images, CSS, JavaScript) and deliver the HTML page.
+                </li>
+                <li><strong>TensorFlow.js</strong><br> 
+                    A machine learning platform to build, train, and predict with feedforward neural networks entirely in the browser.
+                </li>
+                <li><strong>Chart.js</strong><br> 
+                    A popular JavaScript library to generate dynamic and interactive plots for data visualization, including scatter plots and model predictions.
+                </li>
+                <li><strong>chartjs-plugin-datalabels</strong><br>
+                    A plugin for Chart.js that enables the display of percentage values directly on the bars in the chart.
+                </li>
+                <li><strong>local storage</strong><br> 
+                    A web browser feature to temporarily store datasets and models for reuse without retraining or regeneration.
+                </li>
+            </ul>
+
+            <h3>Sources and References</h3>
+            <ul>
+              <li><a href="https://www.tensorflow.org/" target="_blank">TensorFlow.js Documentation</a></li>
+              <li><a href="https://www.chartjs.org/" target="_blank">Chart.js Documentation</a></li>
+              <li><a href="https://chartjs-plugin-datalabels.netlify.app/" target="_blank">Chartjs Plugin Datalabels</a></li>
+              <li><a href="https://expressjs.com/" target="_blank">Express.js Documentation</a></li>
+            </ul>
+          </div>
+
+        <!-- importing ea1.js into the project -->
+        <script src="/javascripts/ea2.js" type="text/javascript"></script>
+    </body>
+</html>

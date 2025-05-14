@@ -1,0 +1,87 @@
+/* public/css/ea2.css */
+
+body {
+    margin: 20px;
+    padding: 0;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #f4f6f8;
+    color: #2c3e50;
+}
+
+/* Heading styles */
+h1 {
+    font-size: 3em;
+    font-weight: 700;
+    color: #34495e;
+    margin-bottom: 10px;
+    text-align: center;
+}
+  
+h2 {
+    font-size: 1.8em;
+    font-weight: 500;
+    color: #5969b6;
+    margin-bottom: 10px;
+    text-align: center;
+}
+  
+h3 {
+    font-size: 1.5em;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: #2c3e50;
+}
+
+p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #666;
+    text-align: center;
+    margin-top: 20px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+canvas {
+    max-width: 600px;  /* Fixed width for consistency */
+    height: 400px;     /* Fixed height for consistency */
+    margin-top: 10px;
+    margin-left: 20px; /* Space between image and chart */
+}
+
+.row {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    margin-bottom: 40px;
+}
+
+.plot-title {
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.chart-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 1em;
+}
+.chart-container div {
+    margin-top: 0.5em;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+ul {
+    margin-bottom: 30px;
+}
+
+li {
+    margin-bottom: 10px;
+}
