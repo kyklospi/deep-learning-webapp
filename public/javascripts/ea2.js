@@ -44,6 +44,10 @@ function loadDataFromLocalStorage(key) {
     return data ? JSON.parse(data) : null;
 }
 
+async function saveModel(key, model) {
+    await model.save(`localstorage://${key}`);
+}
+
 function buildModel() {
     const model = tf.sequential();
     // Activation function ReLU with 100 Neurons
@@ -79,8 +83,18 @@ async function saveModel(name, model) {
     await model.save(`localstorage://${name}`);
 }
 
-async function loadModel(name) {
-    return await tf.loadLayersModel(`localstorage://${name}`);
+// load pre-trained model
+async function loadModel(key, trainData, epochs) {
+    try {
+        return await tf.loadLayersModel(`localstorage://${key}`);
+    } catch (e) {
+        console.warn(`Failed to load pretrained model ${key}:`, e);
+        console.warn('Build and train model instead');
+        const model = buildModel();
+        await trainModel(model, trainData, epochs);
+        saveModel(key, model);
+        return model;
+    }
 }
 
 function createChart(canvasId, dataPoints, predictions = null, labelY = 'y') {
@@ -121,27 +135,32 @@ function createChart(canvasId, dataPoints, predictions = null, labelY = 'y') {
 }
 
 async function run() {
-    const cleanData = generateData(false);
-    const noisyData = generateData(true);
+    let cleanData = loadDataFromLocalStorage('dataClean');
+    let noisyData = loadDataFromLocalStorage('dataNoisy');
+
+    if (!cleanData || !noisyData) {
+        cleanData = generateData(false);
+        saveDataToLocalStorage('dataClean', cleanData);
+
+        noisyData = generateData(true);
+        saveDataToLocalStorage('dataNoisy', noisyData);
+    }
 
     createChart('chartClean', cleanData);
     createChart('chartNoisy', noisyData);
 
     // Train model on clean data
-    const cleanModel = buildModel();
-    await trainModel(cleanModel, cleanData.train, 200);
+    const cleanModel = await loadModel('modelClean', cleanData.train, 200);
     plotPrediction(cleanModel, cleanData, 'chartCleanTrain', true);
     plotPrediction(cleanModel, cleanData, 'chartCleanTest', false);
     
     // Best model on noisy data (small Epochs)
-    const bestModel = buildModel();
-    await trainModel(bestModel, noisyData.train, 300);
+    const bestModel = await loadModel('modelBest', noisyData.train, 300);
     plotPrediction(bestModel, noisyData, 'chartBestTrain', true);
     plotPrediction(bestModel, noisyData, 'chartBestTest', false);
 
     // Overfit model (large Epochs)
-    const overfitModel = buildModel();
-    await trainModel(overfitModel, noisyData.train, 1000);
+    const overfitModel = await loadModel('modelOverfit', noisyData.train, 1000);
     plotPrediction(overfitModel, noisyData, 'chartOverfitTrain', true);
     plotPrediction(overfitModel, noisyData, 'chartOverfitTest', false);
 }
@@ -181,7 +200,5 @@ async function plotPrediction(model, dataset, canvasId, isTrain) {
     yPredTensor.dispose();
 }
 
-window.addEventListener('DOMContentLoaded', () => {
-    run();
-});
+window.addEventListener('DOMContentLoaded', run);
 
