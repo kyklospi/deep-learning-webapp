@@ -3,12 +3,16 @@ let autoMode = false, autoInterval;
 let chart;
 
 document.getElementById('predictBtn').onclick = async () => {
+  showSpinner();
   await trainModel();
   await predictWords();
+  hideSpinner();
 };
 
 document.getElementById('continueBtn').onclick = async () => {
+  showSpinner();
   await continueWithWord();
+  hideSpinner();
 };
 
 document.getElementById('autoBtn').onclick = () => {
@@ -27,6 +31,7 @@ document.getElementById('stopBtn').onclick = () => {
 document.getElementById('resetBtn').onclick = () => {
   document.getElementById('inputText').value = '';
   document.getElementById('predictions').innerHTML = '';
+  document.getElementById('perplexity').innerHTML = '';
   if (chart) chart.destroy();
 };
 
@@ -79,6 +84,8 @@ async function trainModel() {
         }
     });
 
+    await evaluateTopK(sequences);
+
     const evalLoss = await model.evaluate(xs, ys);
     const loss = (await evalLoss[0].data())[0];
     const perplexity = Math.exp(loss);
@@ -86,6 +93,11 @@ async function trainModel() {
     document.getElementById('perplexity').textContent = `Perplexity: ${perplexity.toFixed(2)}`;
 }
 
+function padSequence(seq, maxLen) {
+  const padded = Array(maxLen).fill(0);
+  padded.splice(-seq.length, seq.length, ...seq);
+  return padded;
+}
 
 async function predictWords() {
   const inputText = document.getElementById('inputText').value.toLowerCase();
@@ -93,7 +105,8 @@ async function predictWords() {
   if (tokens.length < seqLength || !model) return;
 
   const sequence = tokens.slice(-seqLength).map(w => wordIndex[w] || 0);
-  const input = tf.tensor([sequence]);
+  const paddedSeq = padSequence(sequence, seqLength);
+  const input = tf.tensor([paddedSeq]);
   const prediction = model.predict(input);
   const probs = await prediction.data();
 
@@ -114,7 +127,8 @@ async function continueWithWord() {
   if (tokens.length < seqLength) return;
 
   const sequence = tokens.slice(-seqLength).map(w => wordIndex[w] || 0);
-  const input = tf.tensor([sequence]);
+  const paddedSeq = padSequence(sequence, seqLength);
+  const input = tf.tensor([paddedSeq]);
   const prediction = model.predict(input);
   const probs = await prediction.data();
   const topIndex = probs.indexOf(Math.max(...probs));
@@ -180,3 +194,84 @@ function updateChart(epoch, loss, acc) {
   chart.data.datasets[1].data.push(acc);
   chart.update();
 }
+
+async function evaluateTopK(sequences, kVals = [1, 5, 10, 20, 100]) {
+  const total = sequences.length;
+  const correctCounts = {};
+  kVals.forEach(k => correctCounts[k] = 0);
+
+  for (let i = 0; i < total; i++) {
+    const { input, label } = sequences[i];
+    const padded = padSequence(input, seqLength);
+    const inputTensor = tf.tensor([padded]);
+
+    const prediction = model.predict(inputTensor);
+    const probs = await prediction.data();
+    prediction.dispose();
+    inputTensor.dispose();
+
+    const sortedIndices = Array.from(probs)
+      .map((p, i) => [i, p])
+      .sort((a, b) => b[1] - a[1])
+      .map(pair => pair[0]);
+
+    kVals.forEach(k => {
+      if (sortedIndices.slice(0, k).includes(label)) {
+        correctCounts[k]++;
+      }
+    });
+  }
+
+  // Calculate accuracy
+  const topKAccuracies = kVals.map(k => ({
+    k,
+    accuracy: (correctCounts[k] / total * 100).toFixed(2)
+  }));
+  
+  renderTopKChart(topKAccuracies);
+}
+
+function renderTopKChart(data) {
+  const ctx = document.getElementById('topkChart').getContext('2d');
+
+  if (window.topkChartInstance) window.topkChartInstance.destroy();
+
+  window.topkChartInstance = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: data.map(d => `Top-${d.k}`),
+      datasets: [{
+        label: 'Accuracy (%)',
+        data: data.map(d => d.accuracy),
+        backgroundColor: '#5969b6'
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: {
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: 'Accuracy (%)'
+          }
+        }
+      },
+      plugins: {
+        title: {
+          display: true,
+          text: 'Top-k Accuracy Evaluation'
+        }
+      }
+    }
+  });
+}
+
+function showSpinner() {
+  document.getElementById('loadingSpinner').style.display = 'block';
+}
+
+function hideSpinner() {
+  document.getElementById('loadingSpinner').style.display = 'none';
+}
+

@@ -24,8 +24,46 @@
             <button id="resetBtn">Reset</button>
         </div>
         <div id="predictions" style="margin: 1em 0;"></div>
+
         <canvas id="chart" width="600" height="200"></canvas>
         <p id="perplexity" style="font-weight: bold;"></p>
+
+        <canvas id="topkChart" width="600" height="300" style="margin-top: 2em;"></canvas>
+
+        <div id="loadingSpinner" style="display:none; text-align:left; margin:1em;">
+            <img src="/images/loading.gif" alt="Loading..." width="240" height="240" />
+        </div>
+    </div>
+
+    <div class="discussion">
+        <h2>Discussion</h2>
+        <p>
+            The model demonstrates good Top-5 accuracy when trained on sufficient data. Perplexity decreases significantly during training. After some observation, it can be concluded that short training data can lead to overfitting. 
+            Automatic text generation works reliably when the input prompt is meaningful. There is a potential privacy risk, as training data may be reconstructable.
+        </p>
+    </div>
+
+    <div class="documentation">
+        <h2>Documentation</h2>
+        <p><strong>Technical Structure:</strong>
+            The application is implemented as a web project and consists of a Node.js backend based on Express.js. The frontend is built with HTML/CSS and uses modern JavaScript libraries (see Frameworks and Libraries).
+            The language model training and prediction takes place entirely in the browser, without requiring a server backend.
+        </p>
+        <p><strong>Implementation Logic:</strong>
+             The solution is based on a two-layer LSTM network with softmax output over the vocabulary. Sequences of 20 words are used. The Top-k evaluation and perplexity provide a measure of prediction quality. 
+             Data is processed through simple tokenization.
+        </p>
+        <p><strong>Observations & Results:</strong>
+            The model achieves good Top-5 accuracy when trained on sufficient data. Perplexity decreases significantly over epochs, indicating improved model confidence. 
+            When using short training texts, the model tends to overfit, as seen by low training loss but poor generalization.
+            Autoregressive generation works well with meaningful prompts but degrades if the input is ambiguous or contains rare tokens.
+            The model occasionally reproduces exact phrases from the training data, highlighting a potential privacy risk in data reconstruction.
+        </p>
+        <p><strong>Key Insights:</strong>
+            Stacked LSTM layers significantly improve sequence modeling compared to single-layer setups. Top-k evaluation is essential to measure practical usability, especially in user-facing autocomplete systems. 
+            Perplexity is a useful metric to monitor training progress and model confidence. Simple tokenization is fast but may miss nuances; more advanced NLP tokenizers could improve quality. 
+            Generating coherent long text requires both semantic-rich prompts and robust training data.
+        </p>
     </div>
 
     <!-- importing ea3.js into the project -->
