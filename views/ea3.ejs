@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Language Model with Long Short-Term Memory Network - Einsendeaufgabe 3</title>
+    <!-- Import TensorFlow.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="/css/ea3.css" />
+</head>
+<body>
+    <div class="container">
+        <h1>Language Model with Long Short-Term Memory Network</h1>
+        <h2>Einsendeaufgabe 3</h2>
+        <p>Atika Rachmawati</p>
+    
+        <textarea id="inputText" rows="6" cols="60" placeholder="Write your text here..."></textarea>
+
+        <div class="controls">
+            <button id="predictBtn">Predict</button>
+            <button id="continueBtn">Next</button>
+            <button id="autoBtn">Auto</button>
+            <button id="stopBtn">Stop</button>
+            <button id="resetBtn">Reset</button>
+        </div>
+
+        <div class="plot-title" style="text-align: left; margin: 1em 0;">Next predicted words:</div>
+
+        <div id="loadingSpinner" style="display:none; text-align:left; margin:1em;">
+            <img src="/images/loading.gif" alt="Loading..." width="120" height="120" />
+        </div>
+
+        <div id="predictions" style="margin: 1em 0;"></div>
+
+        <div>
+            <div class="plot-title">Loss & Accuracy per Epoch</div>
+                <div class="chart-container">
+                    <canvas id="chart" style="width: 600px; height: 300px;"></canvas>
+                </div>
+        </div>
+
+        <p id="perplexity" style="font-weight: bold;"></p>
+
+        <div>
+            <div class="plot-title">Top-k Accuracy Evaluation</div>
+                <div class="chart-container">
+                    <canvas id="topkChart" style="width: 600px; height: 300px;"></canvas>
+                </div>
+        </div>
+        
+    </div>
+
+    <div class="discussion">
+        <h2>Discussion</h2>
+        <p>
+            The implemented LSTM language model successfully performs next-word prediction based on user input. Using two stacked LSTM layers with 100 units each improves sequence modeling compared to a single-layer architecture. 
+            During training, loss and perplexity decrease steadily, indicating the model is learning effectively. Top-k evaluation shows high accuracy for k=5 and k=10, confirming the model's usefulness in autocomplete scenarios. 
+            However, with limited training data, overfitting occurs quickly, and generalization suffers. The autoregressive generation works reliably when the input text is coherent and semantically rich. 
+            In experiments, the model was able to regenerate parts of the training data verbatim, which raises privacy concerns. The simple tokenizer using whitespace is fast, but a more sophisticated tokenizer could improve results. 
+            Overall, the system demonstrates how client-side LSTM models can be used for interactive language prediction directly in the browser. This also showcases the power and risks of on-device language modeling.
+        </p>
+    </div>
+
+    <div class="documentation">
+        <h2>Documentation</h2>
+        <p><strong>Technical Structure:</strong>
+            The application is implemented as a web project and consists of a Node.js backend based on Express.js. The frontend is built with HTML/CSS and uses modern JavaScript libraries (see Frameworks and Libraries).
+            TensorFlow.js is used to train and run the LSTM language model directly in the browser, without requiring a server backend.
+        </p>
+        <p><strong>Implementation Logic:</strong>
+            The model uses a two-layer stacked LSTM architecture with 100 units per layer. A softmax output layer produces a probability distribution over the vocabulary. 
+            Input sequences consist of 20 words, and one-hot encoding is used for training labels. Cross-entropy loss and the Adam optimizer (learning rate: 0.01) are used to train the model. 
+            Training is performed in the browser when the user clicks the "Predict" button. The model supports single-step prediction, greedy continuation, and automatic word generation up to 10 words. 
+            Evaluation includes perplexity and Top-k accuracy (k=1,5,10,20,100). Results are visualized in real-time. The simple tokenizer splits input text by whitespace, which may limit performance on more complex texts.
+        </p>
+        <p><strong>Observations & Results:</strong>
+            The model achieves good Top-5 accuracy when trained on sufficient data. Perplexity decreases significantly over epochs, indicating improved model confidence. 
+            When using short training texts, the model tends to overfit, as seen by low training loss but poor generalization.
+            Autoregressive generation works well with meaningful prompts but degrades if the input is ambiguous or contains rare tokens.
+            The model occasionally reproduces exact phrases from the training data, highlighting a potential privacy risk in data reconstruction.
+        </p>
+        <p><strong>Key Insights:</strong>
+            Stacked LSTM layers significantly improve sequence modeling compared to single-layer setups. Top-k evaluation is essential to measure practical usability, especially in user-facing autocomplete systems. 
+            Perplexity is a useful metric to monitor training progress and model confidence. Simple tokenization is fast but may miss nuances; more advanced NLP tokenizers could improve quality. 
+            Generating coherent long text requires both semantic-rich prompts and robust training data.
+        </p>
+    </div>
+
+    <!-- importing ea3.js into the project -->
+    <script src="/javascripts/ea3.js" type="text/javascript"></script>
+</body>
+</html>
