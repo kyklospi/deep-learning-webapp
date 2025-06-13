@@ -23,23 +23,41 @@
             <button id="stopBtn">Stop</button>
             <button id="resetBtn">Reset</button>
         </div>
-        <div id="predictions" style="margin: 1em 0;"></div>
 
-        <canvas id="chart" width="600" height="200"></canvas>
-        <p id="perplexity" style="font-weight: bold;"></p>
-
-        <canvas id="topkChart" width="600" height="300" style="margin-top: 2em;"></canvas>
+        <div class="plot-title" style="text-align: left; margin: 1em 0;">Next predicted words:</div>
 
         <div id="loadingSpinner" style="display:none; text-align:left; margin:1em;">
-            <img src="/images/loading.gif" alt="Loading..." width="240" height="240" />
+            <img src="/images/loading.gif" alt="Loading..." width="120" height="120" />
         </div>
+
+        <div id="predictions" style="margin: 1em 0;"></div>
+
+        <div>
+            <div class="plot-title">Loss & Accuracy per Epoch</div>
+                <div class="chart-container">
+                    <canvas id="chart" style="width: 600px; height: 300px;"></canvas>
+                </div>
+        </div>
+
+        <p id="perplexity" style="font-weight: bold;"></p>
+
+        <div>
+            <div class="plot-title">Top-k Accuracy Evaluation</div>
+                <div class="chart-container">
+                    <canvas id="topkChart" style="width: 600px; height: 300px;"></canvas>
+                </div>
+        </div>
+        
     </div>
 
     <div class="discussion">
         <h2>Discussion</h2>
         <p>
-            The model demonstrates good Top-5 accuracy when trained on sufficient data. Perplexity decreases significantly during training. After some observation, it can be concluded that short training data can lead to overfitting. 
-            Automatic text generation works reliably when the input prompt is meaningful. There is a potential privacy risk, as training data may be reconstructable.
+            The implemented LSTM language model successfully performs next-word prediction based on user input. Using two stacked LSTM layers with 100 units each improves sequence modeling compared to a single-layer architecture. 
+            During training, loss and perplexity decrease steadily, indicating the model is learning effectively. Top-k evaluation shows high accuracy for k=5 and k=10, confirming the model's usefulness in autocomplete scenarios. 
+            However, with limited training data, overfitting occurs quickly, and generalization suffers. The autoregressive generation works reliably when the input text is coherent and semantically rich. 
+            In experiments, the model was able to regenerate parts of the training data verbatim, which raises privacy concerns. The simple tokenizer using whitespace is fast, but a more sophisticated tokenizer could improve results. 
+            Overall, the system demonstrates how client-side LSTM models can be used for interactive language prediction directly in the browser. This also showcases the power and risks of on-device language modeling.
         </p>
     </div>
 
@@ -47,11 +65,13 @@
         <h2>Documentation</h2>
         <p><strong>Technical Structure:</strong>
             The application is implemented as a web project and consists of a Node.js backend based on Express.js. The frontend is built with HTML/CSS and uses modern JavaScript libraries (see Frameworks and Libraries).
-            The language model training and prediction takes place entirely in the browser, without requiring a server backend.
+            TensorFlow.js is used to train and run the LSTM language model directly in the browser, without requiring a server backend.
         </p>
         <p><strong>Implementation Logic:</strong>
-             The solution is based on a two-layer LSTM network with softmax output over the vocabulary. Sequences of 20 words are used. The Top-k evaluation and perplexity provide a measure of prediction quality. 
-             Data is processed through simple tokenization.
+            The model uses a two-layer stacked LSTM architecture with 100 units per layer. A softmax output layer produces a probability distribution over the vocabulary. 
+            Input sequences consist of 20 words, and one-hot encoding is used for training labels. Cross-entropy loss and the Adam optimizer (learning rate: 0.01) are used to train the model. 
+            Training is performed in the browser when the user clicks the "Predict" button. The model supports single-step prediction, greedy continuation, and automatic word generation up to 10 words. 
+            Evaluation includes perplexity and Top-k accuracy (k=1,5,10,20,100). Results are visualized in real-time. The simple tokenizer splits input text by whitespace, which may limit performance on more complex texts.
         </p>
         <p><strong>Observations & Results:</strong>
             The model achieves good Top-5 accuracy when trained on sufficient data. Perplexity decreases significantly over epochs, indicating improved model confidence. 

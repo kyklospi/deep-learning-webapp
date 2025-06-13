@@ -44,9 +44,28 @@ p {
     margin-right: auto;
 }
 
+.plot-title {
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 10px;
+    margin-top: 50px;
+}
+
+.chart-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 1em;
+}
+.chart-container div {
+    margin-top: 0.5em;
+    font-size: 14px;
+    font-weight: bold;
+}
+
 canvas {
     max-width: 600px;  /* Fixed width for consistency */
-    height: 400px;     /* Fixed height for consistency */
+    max-height: 400px; /* Fixed height for consistency */
     margin-top: 10px;
     margin-left: 20px; /* Space between image and chart */
 }
@@ -80,6 +99,7 @@ textarea {
 
 #predictions button {
   padding: 14px 28px;
+  margin-right: 5px;
   font-size: 16px;
   font-weight: bold;
   color: #fff;

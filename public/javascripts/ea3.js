@@ -62,10 +62,13 @@ async function trainModel() {
 
     model = tf.sequential();
     model.add(tf.layers.embedding({ inputDim: totalWords, outputDim: 100, inputLength: seqLength }));
+    // Stacked LSTM with 2 Layers @ 100 Units 
     model.add(tf.layers.lstm({ units: 100, returnSequences: true }));
     model.add(tf.layers.lstm({ units: 100 }));
+    // Softmax output with dimension of vocabulary size
     model.add(tf.layers.dense({ units: totalWords, activation: 'softmax' }));
 
+    // Cross entropy loss with optimizer Adam, learning rate 0.01, batch size 32
     model.compile({
         loss: 'categoricalCrossentropy',
         optimizer: tf.train.adam(0.01),
@@ -74,6 +77,7 @@ async function trainModel() {
 
     initChart();
 
+    // Cross entropy loss with batch size 32, epochs 10
     await model.fit(xs, ys, {
         epochs: 10,
         batchSize: 32,
@@ -255,12 +259,6 @@ function renderTopKChart(data) {
             display: true,
             text: 'Accuracy (%)'
           }
-        }
-      },
-      plugins: {
-        title: {
-          display: true,
-          text: 'Top-k Accuracy Evaluation'
         }
       }
     }
