@@ -61,6 +61,7 @@
         </p>
     </div>
 
+    <br /><br />
     <div class="documentation">
         <h2>Documentation</h2>
         <p><strong>Technical Structure:</strong>
@@ -84,6 +85,58 @@
             Perplexity is a useful metric to monitor training progress and model confidence. Simple tokenization is fast but may miss nuances; more advanced NLP tokenizers could improve quality. 
             Generating coherent long text requires both semantic-rich prompts and robust training data.
         </p>
+
+        <br /><br />
+        <h3>Technical Highlights of the Solution</h3>
+        <ul>
+            <li>
+                <strong>Client-Side Machine Learning</strong><br>
+                The solution runs entirely in the browser without any server-side computation, thanks to TensorFlow.js. 
+                It dynamically builds and trains an LSTM model based on user-provided text input, allowing real-time training and prediction.
+            </li>
+            <li>
+                <strong>Visual Feedback Through Charts</strong><br>
+                Predictions are visualized using interactive charts that update live during training and evaluation.
+            </li>
+            <li>
+                <strong>User Experience</strong><br>
+                The web app supports both manual and automated next-word prediction modes, enhancing user interactivity. 
+                The implementation also resets the model and interface without requiring a page reload. 
+                Training feedback includes both perplexity and Top-k accuracy charts, helping users interpret model quality intuitively.
+                Loading icon is shown once the training starts until it ends, to give status feedback to users.
+            </li>
+            <li>
+                <strong>Dynamic DOM & Modular Structure</strong><br>
+                All charts are generated dynamically, including perplexity text.
+            </li>
+        </ul>
+
+        <h3>Used Frameworks and Libraries</h3>
+        <ul>
+            <li><strong>Express.js</strong><br>
+                A minimalist web framework for Node.js used to create server applications. In this case, it is used to serve static files (images, CSS, JavaScript) and deliver the HTML page.
+            </li>
+            <li><strong>TensorFlow.js</strong><br> 
+                A machine learning platform to build, train, and predict with feedforward neural networks entirely in the browser.
+            </li>
+            <li><strong>Chart.js</strong><br> 
+                A popular JavaScript library to generate dynamic and interactive plots for data visualization, including scatter plots and model predictions.
+            </li>
+            <li><strong>chartjs-plugin-datalabels</strong><br>
+                A plugin for Chart.js that enables the display of percentage values directly on the bars in the chart.
+            </li>
+            <li><strong>local storage</strong><br> 
+                A web browser feature to temporarily store datasets and models for reuse without retraining or regeneration.
+            </li>
+        </ul>
+
+        <h3>Sources and References</h3>
+        <ul>
+            <li><a href="https://www.tensorflow.org/" target="_blank">TensorFlow.js Documentation</a></li>
+            <li><a href="https://www.chartjs.org/" target="_blank">Chart.js Documentation</a></li>
+            <li><a href="https://chartjs-plugin-datalabels.netlify.app/" target="_blank">Chartjs Plugin Datalabels</a></li>
+            <li><a href="https://expressjs.com/" target="_blank">Express.js Documentation</a></li>
+        </ul>
     </div>
 
     <!-- importing ea3.js into the project -->
